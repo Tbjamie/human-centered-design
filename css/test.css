@@ -1,0 +1,82 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: black;
+  color: yellow;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  padding: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+.word.highlight {
+  background-color: yellow;
+  color: black;
+}
+.controls-container {
+  position: relative;
+}
+.controls-toggle {
+  background: black;
+  border: 1px solid yellow;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: yellow;
+  cursor: pointer;
+}
+.controls {
+  display: none;
+  margin-bottom: 1rem;
+}
+.visible {
+  display: block;
+}
+label,
+button,
+select,
+input {
+  display: block;
+  margin: 0.5rem 0;
+  color: yellow;
+  cursor: pointer;
+  background: black;
+  border: 1px solid yellow;
+  padding: 0.5rem;
+}
+.always-visible-controls {
+  margin-top: 1rem;
+}
+.always-visible-controls button {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+.notation-list {
+  width: 40%;
+  border-left: 1px solid yellow;
+  padding-left: 1rem;
+}
+.notation-item {
+  margin-bottom: 1rem;
+}
+.notation-item button {
+  margin-top: 0.5rem;
+}
+.main-content {
+  flex: 1;
+}
+.popover {
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  background: black;
+  border: 2px solid yellow;
+  padding: 1rem;
+  z-index: 10;
+}
+.hidden {
+  display: none;
+}

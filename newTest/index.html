@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accessible Reader</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>The Antichrist</h1>
+      <button id="toggle-settings" aria-label="Toggle settings menu">☰</button>
+    </header>
+
+    <aside id="settings-panel" class="settings">
+      <h2>Settings</h2>
+      <label for="font-size">Font Size:</label>
+      <select id="font-size">
+        <option value="16px">Small</option>
+        <option value="20px" selected>Medium</option>
+        <option value="24px">Large</option>
+        <option value="28px">Extra Large</option>
+      </select>
+
+      <label for="font-weight">Font Weight:</label>
+      <select id="font-weight">
+        <option value="normal" selected>Normal</option>
+        <option value="bold">Bold</option>
+        <option value="lighter">Light</option>
+      </select>
+
+      <label for="speech-speed">Speech Speed:</label>
+      <select id="speech-speed">
+        <option value="0.5">Slow</option>
+        <option value="1" selected>Normal</option>
+        <option value="1.5">Fast</option>
+        <option value="2">Very Fast</option>
+      </select>
+
+      <label for="speech-voice">Voice:</label>
+      <select id="speech-voice"></select>
+
+      <button id="reset-settings">Reset Settings</button>
+    </aside>
+
+    <main>
+      <section id="reader">
+        <p id="text" tabindex="0">
+          Save for his raucous, rhapsodical autobiography, “Ecce Homo,” “The
+          Antichrist” is the last thing that Nietzsche ever wrote, and so it may
+          be accepted as a statement of some of his most salient ideas in their
+          final form. Notes for it had been accumulating for years and it was to
+          have constituted the first volume of his long-projected magnum opus,
+          “The Will to Power.”
+        </p>
+        <div class="controls">
+          <button id="start-reading">Start Reading</button>
+          <button id="stop-reading">Stop Reading</button>
+          <button id="make-note">Make Note</button>
+        </div>
+      </section>
+
+      <section id="notes">
+        <h2>Saved Notes</h2>
+        <ul id="notes-list"></ul>
+      </section>
+
+      <dialog id="note-dialog">
+        <p id="note-sentence"></p>
+        <textarea
+          id="note-input"
+          rows="4"
+          cols="50"
+          placeholder="Type your note or use the mic..."
+        ></textarea>
+        <div class="note-actions">
+          <button id="mic-btn" aria-label="Start speech to text">🎤</button>
+          <button id="save-note">Save Note</button>
+          <button id="cancel-note">Cancel</button>
+        </div>
+      </dialog>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

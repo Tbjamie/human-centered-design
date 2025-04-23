@@ -1,0 +1,111 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background-color: #131313;
+  --primary-color: #f4ff1c;
+  --secondary-color: #7e00fd;
+}
+
+html {
+  background-color: var(--background-color);
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  min-height: 100vh;
+}
+
+.skip-to-link {
+  position: absolute;
+  left: 0;
+  transform: translateY(-100%);
+  z-index: 9999;
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.settings-button {
+  width: 100vw;
+  height: 10vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border: none;
+  font-size: clamp(1rem, 1.036vw + 0.757rem, 2rem);
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.settings {
+  width: 100vw;
+  height: 90vh;
+  margin-top: 10vh;
+  display: none;
+
+  &.open {
+    display: block;
+  }
+
+  & input[type="range"] {
+    accent-color: var(--primary-color);
+  }
+}
+
+#home main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  overflow: hidden;
+
+  & a {
+    background-color: var(--secondary-color);
+    width: 75%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: clamp(2rem, 1.036vw + 2.757rem, 3.5rem);
+  }
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+
+    & a {
+      width: 30%;
+    }
+  }
+}
+
+#your-books main {
+  padding-top: 10vh;
+
+  & section {
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
