@@ -1,7 +1,7 @@
 // script.js
+
+// Initialiseer spraaksynthese en DOM-elementen
 const synth = window.speechSynthesis;
-let utterance;
-const textEl = document.getElementById("text");
 const startReadingBtn = document.getElementById("start-reading");
 const stopReadingBtn = document.getElementById("stop-reading");
 const makeNoteBtn = document.getElementById("make-note");
@@ -19,6 +19,7 @@ const resetSettingsBtn = document.getElementById("reset-settings");
 const toggleSettingsBtn = document.getElementById("toggle-settings");
 const settingsPanel = document.getElementById("settings-panel");
 
+// Status variabelen bijhouden
 let lastSentence = "";
 let speechSpeed = parseFloat(localStorage.getItem("speechSpeed")) || 1;
 let resumeIndex = 0;
@@ -26,6 +27,7 @@ let fullSentences = [];
 let voices = [];
 let selectedVoiceURI = localStorage.getItem("selectedVoiceURI") || "";
 
+// Vult de lijst met beschikbare stemmen
 function populateVoices() {
   voices = synth.getVoices();
   voiceSelect.innerHTML = "";
@@ -40,8 +42,10 @@ function populateVoices() {
   });
 }
 
+// Eventlistener voor wanneer de stemmen beschikbaar zijn
 synth.onvoiceschanged = populateVoices;
 
+// Functie om tekst voor te lezen
 function speakText() {
   if (synth.speaking) synth.cancel();
 
@@ -57,6 +61,7 @@ function speakText() {
     if (voice) fullUtterance.voice = voice;
   }
 
+  // Markeert woorden tijdens het voorlezen
   fullUtterance.onboundary = (event) => {
     if (event.name === "word") {
       const wordStart = event.charIndex;
@@ -66,6 +71,7 @@ function speakText() {
     }
   };
 
+  // Markeer einde van voorlezen
   fullUtterance.onend = () => {
     resumeIndex = fullSentences.length;
   };
@@ -73,6 +79,7 @@ function speakText() {
   synth.speak(fullUtterance);
 }
 
+// Markeert het huidige voorgelezen woord
 function highlightCurrentWord(currentText) {
   const fullText = textEl.innerText;
   const words = fullText.split(/\s+/);
@@ -91,6 +98,7 @@ function highlightCurrentWord(currentText) {
   lastSentence = getLastSentence(currentText);
 }
 
+// Stop het voorlezen
 function stopText() {
   if (synth.speaking) synth.cancel();
   const highlighted = document.querySelector("#text .highlight");
@@ -105,14 +113,17 @@ function stopText() {
   }
 }
 
+// Haalt de laatste zin uit de tekst
 function getLastSentence(text) {
   const sentences = text.match(/[^.!?]+[.!?]+/g);
   return sentences ? sentences[sentences.length - 1].trim() : text;
 }
 
+// Eventlisteners voor start en stop knoppen
 startReadingBtn.addEventListener("click", speakText);
 stopReadingBtn?.addEventListener("click", stopText);
 
+// Notitie aanmaken bij klikken op notitieknop
 makeNoteBtn.addEventListener("click", () => {
   if (synth.speaking) synth.cancel();
   noteSentenceEl.textContent = `Note on: "${lastSentence}"`;
@@ -120,6 +131,7 @@ makeNoteBtn.addEventListener("click", () => {
   noteDialog.showModal();
 });
 
+// Spraakherkenning voor microfoonknop
 micBtn?.addEventListener("click", () => {
   const recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition)();
@@ -132,6 +144,7 @@ micBtn?.addEventListener("click", () => {
   };
 });
 
+// Notitie opslaan
 saveNoteBtn.addEventListener("click", () => {
   const note = {
     sentence: lastSentence,
@@ -144,10 +157,12 @@ saveNoteBtn.addEventListener("click", () => {
   noteDialog.close();
 });
 
+// Notitie annuleren
 document
   .getElementById("cancel-note")
   .addEventListener("click", () => noteDialog.close());
 
+// Notities weergeven op de pagina
 function renderNotes() {
   notesList.innerHTML = "";
   const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
@@ -158,8 +173,10 @@ function renderNotes() {
   });
 }
 
+// Notities laden bij pagina-initialisatie
 renderNotes();
 
+// Functie om tekst van gefocuste elementen voor te lezen
 function speakFocusedElementText(e) {
   if (synth.speaking) synth.cancel();
   let label =
@@ -174,33 +191,39 @@ function speakFocusedElementText(e) {
   }
 }
 
+// Focus eventlisteners voor toegankelijkheid
 document.querySelectorAll("button, h1, h2, #reader, #notes").forEach((el) => {
   el.addEventListener("focus", speakFocusedElementText);
 });
 
-// Settings Handlers
+// Instellingen handlers
+// Lettergrootte aanpassen
 fontSizeSelect?.addEventListener("change", (e) => {
   const size = e.target.value;
   document.body.style.fontSize = size;
   localStorage.setItem("fontSize", size);
 });
 
+// Lettergewicht aanpassen
 fontWeightSelect?.addEventListener("change", (e) => {
   const weight = e.target.value;
   document.body.style.fontWeight = weight;
   localStorage.setItem("fontWeight", weight);
 });
 
+// Spreeksnelheid aanpassen
 speechSpeedSelect?.addEventListener("change", (e) => {
   speechSpeed = parseFloat(e.target.value);
   localStorage.setItem("speechSpeed", speechSpeed);
 });
 
+// Stem selecteren
 voiceSelect?.addEventListener("change", (e) => {
   selectedVoiceURI = e.target.value;
   localStorage.setItem("selectedVoiceURI", selectedVoiceURI);
 });
 
+// Instellingen resetten naar standaardwaarden
 resetSettingsBtn?.addEventListener("click", () => {
   document.body.style.fontSize = "20px";
   document.body.style.fontWeight = "normal";
@@ -218,9 +241,11 @@ resetSettingsBtn?.addEventListener("click", () => {
   localStorage.removeItem("selectedVoiceURI");
 });
 
+// Instellingenpaneel in/uitklappen
 toggleSettingsBtn?.addEventListener("click", () => {
   const isOpen = settingsPanel.classList.toggle("open");
 
+  // Tabindex beheren voor toegankelijkheid
   const focusableElements = settingsPanel.querySelectorAll("select, button");
   focusableElements.forEach((el) => {
     if (isOpen) {
@@ -230,6 +255,7 @@ toggleSettingsBtn?.addEventListener("click", () => {
     }
   });
 
+  // Focus binnen het instellingenpaneel houden
   if (isOpen) {
     const first = focusableElements[0];
     const last = focusableElements[focusableElements.length - 1];
@@ -256,7 +282,7 @@ toggleSettingsBtn?.addEventListener("click", () => {
   }
 });
 
-// Restore saved settings
+// Opgeslagen instellingen herstellen
 const savedFontSize = localStorage.getItem("fontSize");
 if (savedFontSize) {
   document.body.style.fontSize = savedFontSize;
@@ -279,4 +305,5 @@ if (selectedVoiceURI) {
   voiceSelect.value = selectedVoiceURI;
 }
 
+// Stemmen initialiseren
 populateVoices();
